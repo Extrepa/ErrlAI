@@ -6,10 +6,16 @@ const app = express();
 const PORT = Number(process.env.PORT || 3033);
 const OLLAMA_HOST = process.env.OLLAMA_HOST || 'http://127.0.0.1:11434';
 const DEFAULT_MODEL = process.env.DEFAULT_MODEL || 'errl-ai';
+const OLLAMA_TIMEOUT_MS = Number(process.env.OLLAMA_TIMEOUT_MS || 120_000);
 const RATE_LIMIT_WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS || 60_000);
 const RATE_LIMIT_MAX = Number(process.env.RATE_LIMIT_MAX || 30);
 
 const rateLimitBuckets = new Map();
+
+function withTimeout(controller) {
+  const t = setTimeout(() => controller.abort(), OLLAMA_TIMEOUT_MS);
+  return () => clearTimeout(t);
+}
 
 function getClientIp(req) {
   const cfIp = req.headers['cf-connecting-ip'];
@@ -76,6 +82,7 @@ app.get('/v1/models', async (req, res) => {
     const models = (j.models || []).map((m) => ({ name: m.name }));
     res.json({ models, default: DEFAULT_MODEL });
   } catch (e) {
+    try { clearTimeoutFn(); } catch {}
     res.status(502).json({ error: String(e?.message || e) });
   }
 });
@@ -91,6 +98,7 @@ app.post('/v1/chat', rateLimit, async (req, res) => {
   }
 
   const controller = new AbortController();
+  const clearTimeoutFn = withTimeout(controller);
   req.on('close', () => controller.abort());
 
   const sendSse = (event, data) => {
@@ -118,10 +126,12 @@ app.post('/v1/chat', rateLimit, async (req, res) => {
         });
       }
 
+      clearTimeoutFn();
       if (!upstream.ok) {
         return res.status(502).json({ error: `ollama upstream failed: ${upstream.status}` });
       }
 
+      clearTimeoutFn();
       const j = await upstream.json();
       const content = j.message?.content ?? j.response ?? "";
       return res.json({ model: useModel, content, raw: j });
@@ -159,6 +169,7 @@ app.post('/v1/chat', rateLimit, async (req, res) => {
       });
     }
 
+    clearTimeoutFn();
     if (!upstream.ok || !upstream.body) {
       sendSse("error", { error: `ollama upstream failed: ${upstream.status}` });
       clearInterval(heartbeat);
@@ -191,6 +202,8 @@ app.post('/v1/chat', rateLimit, async (req, res) => {
         }
       }
     }
+
+    clearTimeoutFn();
 
     clearInterval(heartbeat);
     res.end();
