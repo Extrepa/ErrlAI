@@ -1,0 +1,12 @@
+{
+  "name": "errlai",
+  "private": true,
+  "workspaces": [
+    "apps/chat-web",
+    "apps/chat-api"
+  ],
+  "scripts": {
+    "dev": "npm --workspace apps/chat-api run dev & npm --workspace apps/chat-web run dev",
+    "build": "npm --workspace apps/chat-web run build && npm --workspace apps/chat-api run build"
+  }
+}

@@ -1,0 +1,19 @@
+[Unit]
+Description=ErrlAI Chat API (Ollama proxy)
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/path/to/ErrlAI/apps/chat-api
+Environment=NODE_ENV=production
+EnvironmentFile=/path/to/ErrlAI/apps/chat-api/.env
+ExecStart=/usr/bin/node /path/to/ErrlAI/apps/chat-api/src/server.js
+Restart=always
+RestartSec=2
+
+# Run as a dedicated user if you prefer:
+# User=chat-api
+# Group=chat-api
+
+[Install]
+WantedBy=multi-user.target
