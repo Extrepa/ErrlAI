@@ -72,6 +72,13 @@ app.use(
   })
 );
 
+app.get('/', (req, res) => {
+  res.json({
+    ok: true,
+    service: 'chat-api',
+    endpoints: { health: '/health', models: '/v1/models', chat: '/v1/chat' },
+  });
+});
 app.get('/health', (req, res) => {
   res.json({ ok: true, service: 'chat-api', ollamaHost: OLLAMA_HOST });
 });
