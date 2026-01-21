@@ -19,6 +19,7 @@ export function App() {
   const [status, setStatus] = useState<'unknown' | 'ok' | 'down'>('unknown');
   const [models, setModels] = useState<string[]>([]);
   const [model, setModel] = useState<string>('');
+  const [useStreaming, setUseStreaming] = useState(false);
 
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
@@ -64,6 +65,7 @@ export function App() {
     setStreaming(true);
 
     try {
+      const doStream = useStreaming;
       const res = await fetch(`${API_BASE}/v1/chat`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -71,12 +73,30 @@ export function App() {
         body: JSON.stringify({
           model: model || undefined,
           messages: chatMessages.concat({ role: "user", content: trimmed }),
-          stream: true,
+          stream: doStream,
         }),
       });
 
-      if (!res.ok || !res.body) {
+      if (!res.ok) {
         throw new Error(`API failed: ${res.status}`);
+      }
+
+      if (!doStream) {
+        const j = (await res.json()) as { content?: string };
+        const content = j.content || "";
+        setMessages((prev) => {
+          const copy = [...prev];
+          const last = copy[copy.length - 1];
+          if (last?.role === "assistant") {
+            copy[copy.length - 1] = { ...last, content };
+          }
+          return copy;
+        });
+        return;
+      }
+
+      if (!res.body) {
+        throw new Error("API failed: empty body");
       }
 
       const reader = res.body.getReader();
@@ -146,6 +166,15 @@ export function App() {
         <h1 style={{ margin: 0 }}>ErrlAI Chat</h1>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <span style={{ fontSize: 12, opacity: 0.8 }}>API: {status}</span>
+<label style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, opacity: 0.85 }}>
+  <input
+    type="checkbox"
+    checked={useStreaming}
+    onChange={(e) => setUseStreaming(e.target.checked)}
+    disabled={streaming}
+  />
+  Stream
+</label>
           {models.length > 0 ? (
             <select value={model} onChange={(e) => setModel(e.target.value)}>
               {models.map((m) => (
