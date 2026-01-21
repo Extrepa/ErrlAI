@@ -4,7 +4,7 @@ type Msg = { role: 'user' | 'assistant' | 'system'; content: string };
 type TokenEvent = { token: string };
 type ModelsResponse = { models: { name: string }[]; default?: string };
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:3033';
+const API_BASE = (import.meta.env.VITE_API_BASE || 'http://localhost:3033').replace(/\/+$/, '');
 
 export function App() {
   const [messages, setMessages] = useState<Msg[]>([
