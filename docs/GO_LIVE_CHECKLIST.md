@@ -4,15 +4,15 @@
 
 - [ ] Ollama is healthy: `http://127.0.0.1:11434` returns 200
 - [ ] `apps/chat-api` is running on localhost: `http://127.0.0.1:3033/health`
-- [ ] Caddy reverse proxy for `api.chat.errl.wtf` -> `127.0.0.1:3033`
-- [ ] Cloudflare Access protects `api.chat.errl.wtf/*`
+- [ ] Caddy reverse proxy for `api.errl.wtf` -> `127.0.0.1:3033`
+- [ ] Cloudflare Access protects `api.errl.wtf/*`
 
 ### Web (Cloudflare Pages)
 
 - [ ] Pages project root: `apps/chat-web`
 - [ ] Build: `npm ci && npm run build`
 - [ ] Output: `dist`
-- [ ] Env: `VITE_API_BASE=https://api.chat.errl.wtf`
+- [ ] Env: `VITE_API_BASE=https://api.errl.wtf`
 - [ ] Custom domain: `chat.errl.wtf`
 - [ ] Cloudflare Access protects `chat.errl.wtf/*`
 

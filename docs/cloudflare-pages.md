@@ -7,7 +7,7 @@ Suggested settings:
 - Build command: `npm ci && npm run build`
 - Build output directory: `dist`
 - Environment variables:
-  - `VITE_API_BASE=https://api.chat.errl.wtf`
+  - `VITE_API_BASE=https://api.errl.wtf`
 
 Then add custom domain:
 - `chat.errl.wtf` -> this Pages project

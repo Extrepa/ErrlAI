@@ -2,11 +2,16 @@
 
 Goal: require login for both:
 - `chat.errl.wtf/*`
-- `api.chat.errl.wtf/*`
+- `api.errl.wtf/*`
 
 Recommended:
-- Create ONE wildcard self-hosted app for `*.chat.errl.wtf` (covers both `chat.errl.wtf` and `api.chat.errl.wtf`)
-- Restrict to your identity / allowed emails
+
+Option A (simplest): two apps
+- `chat.errl.wtf/*`
+- `api.errl.wtf/*`
+
+Option B: one wildcard app
+- `*.errl.wtf/*` (covers both, but also covers any other one-level subdomains)
 
 Notes:
 - With Access in front, the API does not need a public API key.

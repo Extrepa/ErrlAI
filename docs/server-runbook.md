@@ -1,6 +1,6 @@
-## Server runbook (api.chat.errl.wtf)
+## Server runbook (api.errl.wtf)
 
-Goal: run `apps/chat-api` on the server (localhost-only), then expose it via Caddy at `api.chat.errl.wtf` and protect it with Cloudflare Access.
+Goal: run `apps/chat-api` on the server (localhost-only), then expose it via Caddy at `api.errl.wtf` and protect it with Cloudflare Access.
 
 ### Prereqs
 
@@ -40,7 +40,7 @@ sudo systemctl status chat-api
 Add a site block like:
 
 ```
-api.chat.errl.wtf {
+api.errl.wtf {
   reverse_proxy 127.0.0.1:3033
 }
 ```

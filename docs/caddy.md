@@ -1,13 +1,16 @@
-## Caddy (api.chat.errl.wtf)
+## Caddy (optional)
 
-Goal: expose the chat API via Caddy while keeping the service localhost-bound.
+Goal: optional local reverse proxy. If you are using Cloudflare Tunnel directly to `http://127.0.0.1:3033`, you do not need Caddy for the API.
 
 Example Caddy site block:
 
 ```
-api.chat.errl.wtf {
+api.errl.wtf {
   reverse_proxy 127.0.0.1:3033
 }
 ```
 
-Gate `api.chat.errl.wtf/*` with Cloudflare Access.
+Gate `api.errl.wtf/*` with Cloudflare Access.
+
+
+Note: with Tunnel, publish `api.errl.wtf` -> `http://127.0.0.1:3033`.

@@ -3,7 +3,7 @@
 Fullstack chat app for `chat.errl.wtf`.
 
 - Frontend: Cloudflare Pages (`chat.errl.wtf`)
-- Backend: Node/Express API on your server, localhost-bound, proxied via Caddy (`api.chat.errl.wtf`)
+- Backend: Node/Express API on your server, localhost-bound, proxied via Caddy (`api.errl.wtf`)
 - Inference: Ollama on server (`http://127.0.0.1:11434`)
 - Auth: Cloudflare Access in front of both hostnames
 
@@ -36,5 +36,5 @@ npm run dev
 
 - Deploy `apps/chat-web` to Cloudflare Pages (custom domain `chat.errl.wtf`)
 - Run `apps/chat-api` on the server (systemd or docker)
-- Caddy proxies `api.chat.errl.wtf` -> `127.0.0.1:3033`
-- Cloudflare Access gates both `chat.errl.wtf/*` and `api.chat.errl.wtf/*`
+- Caddy proxies `api.errl.wtf` -> `127.0.0.1:3033`
+- Cloudflare Access gates both `chat.errl.wtf/*` and `api.errl.wtf/*`

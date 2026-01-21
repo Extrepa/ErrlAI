@@ -3,7 +3,7 @@
 Intended run mode:
 
 - `chat.errl.wtf`: Cloudflare Pages -> `apps/chat-web`
-- `api.chat.errl.wtf`: Caddy -> localhost `chat-api` -> Ollama
+- `api.errl.wtf`: Caddy -> localhost `chat-api` -> Ollama
 - Auth: Cloudflare Access
 
 See:
