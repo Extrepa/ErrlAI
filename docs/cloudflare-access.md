@@ -5,7 +5,7 @@ Goal: require login for both:
 - `api.chat.errl.wtf/*`
 
 Recommended:
-- Create Access applications (or one app with multiple policies)
+- Create ONE wildcard self-hosted app for `*.chat.errl.wtf` (covers both `chat.errl.wtf` and `api.chat.errl.wtf`)
 - Restrict to your identity / allowed emails
 
 Notes:

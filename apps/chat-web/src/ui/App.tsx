@@ -29,7 +29,7 @@ export function App() {
   useEffect(() => {
     (async () => {
       try {
-        const r = await fetch(`${API_BASE}/health`);
+        const r = await fetch(`${API_BASE}/health`, { credentials: 'include' });
         setStatus(r.ok ? 'ok' : 'down');
       } catch {
         setStatus('down');
@@ -40,7 +40,7 @@ export function App() {
   useEffect(() => {
     (async () => {
       try {
-        const r = await fetch(`${API_BASE}/v1/models`);
+        const r = await fetch(`${API_BASE}/v1/models`, { credentials: 'include' });
         if (!r.ok) return;
         const j = (await r.json()) as ModelsResponse;
         const list = (j.models || []).map((m) => m.name);
@@ -67,6 +67,7 @@ export function App() {
       const res = await fetch(`${API_BASE}/v1/chat`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           model: model || undefined,
           messages: chatMessages.concat({ role: "user", content: trimmed }),
